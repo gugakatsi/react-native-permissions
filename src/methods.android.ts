@@ -33,11 +33,11 @@ function check(permission: Permission): Promise<PermissionStatus> {
   return NativeModule.checkPermission(permission);
 }
 
-async function request(permission: Permission, rationale?: Rationale): Promise<PermissionStatus> {
+async function request(permission: Permission, rationale?: Rationale, forceDialog?: Boolean): Promise<PermissionStatus> {
   if (rationale) {
     const shouldShowRationale = await NativeModule.shouldShowRequestPermissionRationale(permission);
 
-    if (shouldShowRationale) {
+    if (shouldShowRationale || forceDialog) {
       const {title, message, buttonPositive, buttonNegative, buttonNeutral} = rationale;
 
       return new Promise((resolve) => {
